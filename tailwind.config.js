@@ -8,6 +8,36 @@ export default {
                 primary: "#0D0D0D",
                 secondary: "#1A1A1A",
             },
+            fontSize: {
+                14: "14px",
+            },
+            backgroundColor: {
+                "main-bg": "#0D0D0D",
+                "main-dark-bg": "#0D0D0D",
+                "secondary-dark-bg": "#1A1A1A",
+                "half-transparent": "rgba(0, 0, 0, 0.5)",
+            },
+            borderWidth: {
+                1: "1px",
+            },
+            borderColor: {
+                color: "rgba(0, 0, 0, 0.1)",
+            },
+            width: {
+                400: "400px",
+                760: "760px",
+                780: "780px",
+                800: "800px",
+                1000: "1000px",
+                1200: "1200px",
+                1400: "1400px",
+            },
+            height: {
+                80: "80px",
+            },
+            minHeight: {
+                590: "590px",
+            },
         },
     },
     plugins: [

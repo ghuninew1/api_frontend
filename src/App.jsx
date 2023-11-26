@@ -1,4 +1,3 @@
-// import { memo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Home, About, Contact, Login, Register } from "./pages";
 import { Error, Root } from "./components";
@@ -28,7 +27,7 @@ export default function App() {
                     element: <Login />,
                 },
                 {
-                    path: "/signup",
+                    path: "/register",
                     element: <Register />,
                 },
             ],

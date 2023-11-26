@@ -1,5 +1,6 @@
 import { useRouteError } from "react-router-dom";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
+import { wait } from "../components/utils";
 
 export default function Error() {
     const errors = useRouteError();
@@ -22,3 +23,29 @@ export default function Error() {
         </div>
     );
 }
+
+export function ShowError({ error, setError }) {
+    if (error == null || error === "") return;
+
+    wait(4000).then(() => {
+        setError(null);
+    });
+
+    return (
+        <div
+            className="flex justify-center items-center bg-red-500 fixed top-0 left-0 w-full h-full"
+            onClick={() => {
+                setError(null);
+            }}
+        >
+            <h2 className="text-center text-secondary font-mono text-xl font-medium">
+                {error}
+            </h2>
+        </div>
+    );
+}
+
+ShowError.propTypes = {
+    error: PropTypes.string,
+    setError: PropTypes.func,
+};

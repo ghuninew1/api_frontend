@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { IoMenuOutline, IoClose, IoWater } from "react-icons/io5";
 import navbarLink from "../assets/navbarLink.json";
 
@@ -20,15 +20,13 @@ export default function Navbar() {
             role="navigation"
         >
             <div className="flex justify-between items-center ml-2 md:ml-8">
-                <div className="">
-                    <a href="/" className="">
-                        <IoWater className="" size={30} />
-                    </a>
-                </div>
+                <Link to="/">
+                    <IoWater className="" size={30} />
+                </Link>
             </div>
-            <div className="pr-8 md:flex hidden font-sans font-medium text-[18px] gap-4">
+            <div className="pr-8 md:flex hidden font-sans font-medium text-[18px] gap-4 uppercase">
                 {navbarLink
-                    .filter((link) => link.id > 3)
+                    .filter((link) => link.id > 0)
                     .map((link, index) => (
                         <NavLink
                             key={index}
@@ -70,7 +68,7 @@ export default function Navbar() {
                     }`}
             >
                 <div
-                    className={`md:hidden flex flex-col justify-center items-center w-full gap-2 font-medium text-base font-sans bg-primary py-2 pt-2 z-30 hover:text-orange-700 transition-all duration-300 ease-in-out`}
+                    className={`md:hidden flex flex-col justify-center items-center w-full gap-2 font-medium text-base font-sans bg-primary py-2 pt-2 z-30 hover:text-orange-700 transition-all duration-300 ease-in-out uppercase`}
                 >
                     {navbarLink.map((link, index) => (
                         <NavLink

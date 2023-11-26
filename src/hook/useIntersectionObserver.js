@@ -1,32 +1,51 @@
-import { useRef, useCallback, useState } from "react";
+import { useCallback, useState, useRef } from "react";
+import PropTypes from "prop-types";
 
-export function useIntersectionObserver(options = {}) {
-    const { threshold = 0, root = null, rootMargin = "0px" } = options;
-    const [entry, setEntry] = useState(null);
-
-    const previousObserver = useRef(null);
+export function useIntersectionObserver({ threshold, root, rootMargin }) {
+    const [entry, setEntry] = useState(false);
+    const ref = useRef(null);
 
     const customRef = useCallback(
         (node) => {
-            if (previousObserver.current) {
-                previousObserver.current.disconnect();
-                previousObserver.current = null;
+            if (ref.current) {
+                ref.current.disconnect();
+                ref.current = null;
             }
 
             if (node?.nodeType === Node.ELEMENT_NODE) {
                 const observer = new IntersectionObserver(
                     ([entry]) => {
-                        setEntry(entry);
+                        setEntry(entry?.isIntersecting);
                     },
                     { threshold, root, rootMargin }
                 );
 
                 observer.observe(node);
-                previousObserver.current = observer;
+                ref.current = observer;
+            }
+
+            if (node) {
+                node.addEventListener("load", () => {
+                    setEntry(true);
+                });
+            } else {
+                setEntry(false);
+            }
+
+            if (typeof ref === "function") {
+                ref(node);
+            } else if (ref) {
+                ref.current = node;
             }
         },
-        [threshold, root, rootMargin]
+        [ref, threshold, root, rootMargin]
     );
 
     return [customRef, entry];
 }
+
+useIntersectionObserver.propTypes = {
+    threshold: PropTypes.number,
+    root: PropTypes.object,
+    rootMargin: PropTypes.string,
+};

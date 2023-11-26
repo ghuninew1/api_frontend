@@ -1,5 +1,11 @@
-// import React from "react";
+// import { useState, useEffect, useRef } from "react";
 
-export default function Contact() {
-    return <div>Contact</div>;
-}
+const Contact = () => {
+    return (
+        <div>
+            <h1>Contact</h1>
+        </div>
+    );
+};
+
+export default Contact;

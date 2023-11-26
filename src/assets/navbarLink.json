@@ -21,7 +21,7 @@
     },
     {
         "name": "Sign Up",
-        "url": "/signup",
+        "url": "/register",
         "id": 5
     }
 ]
