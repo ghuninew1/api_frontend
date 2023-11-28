@@ -1,6 +1,6 @@
 import { useRouteError } from "react-router-dom";
 import PropTypes from "prop-types";
-import { wait } from "../components/utils";
+import { wait } from "../utils/utils";
 
 export default function Error() {
     const errors = useRouteError();

@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Home, About, Contact, Login, Register } from "./pages";
-import { Error, Root } from "./components";
+import { Error, Root, RouteRoot } from "./components";
 
 export default function App() {
     const route = createBrowserRouter([
@@ -16,11 +16,19 @@ export default function App() {
                 },
                 {
                     path: "/about",
-                    element: <About />,
+                    element: (
+                        <RouteRoot>
+                            <About />
+                        </RouteRoot>
+                    ),
                 },
                 {
                     path: "/contact",
-                    element: <Contact />,
+                    element: (
+                        <RouteRoot>
+                            <Contact />
+                        </RouteRoot>
+                    ),
                 },
                 {
                     path: "/login",

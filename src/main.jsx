@@ -2,13 +2,13 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
-import { AuthContextProvider } from "./contexts/AuthContextProvider";
+import { AuthProvider } from "./contexts/AuthProvider";
 
 const root = createRoot(document.getElementById("root"));
 root.render(
     <StrictMode>
-        <AuthContextProvider>
+        <AuthProvider>
             <App />
-        </AuthContextProvider>
+        </AuthProvider>
     </StrictMode>
 );

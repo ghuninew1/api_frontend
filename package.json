@@ -5,7 +5,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "server": "cd ../api_backend/ && npm run dev",
+        "server": "zsh ./run.zsh",
+        "stop": "zsh ./stop.zsh",
         "build": "vite build",
         "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
         "preview": "vite preview"
@@ -18,7 +19,7 @@
     "devDependencies": {
         "@types/react": "^18.2.38",
         "@types/react-dom": "^18.2.17",
-        "@vitejs/plugin-react-swc": "^3.5.0",
+        "@vitejs/plugin-react": "^4.2.0",
         "autoprefixer": "^10.4.16",
         "axios": "^1.6.2",
         "eslint": "^8.54.0",

@@ -1,14 +1,17 @@
-import { useRef, useEffect, useState } from "react";
-import { Input, Button } from "../../components";
-import { cx } from "../../components/utils";
-import { ShowError } from "../../components/Error";
+import { useRef, useState } from "react";
+import { Input, Button, ShowError, LogedIn } from "../components";
+import { cx } from "../utils/utils";
+import { useAuthContext } from "../contexts/useAuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
     const [errors, setErrors] = useState(null);
+    const { changeUser } = useAuthContext();
     const usernameRef = useRef(null);
     const passwordRef = useRef(null);
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const username = usernameRef.current?.value;
         const passwordData = passwordRef.current?.value;
@@ -29,7 +32,24 @@ export default function Login() {
             return;
         }
 
-        setErrors(passwordData);
+        try {
+            const data = await LogedIn(username, passwordData);
+            console.log(data);
+            changeUser({
+                username: data.username,
+                email: data.email,
+                token: data.tokens[0]?.token,
+                isLogIn: true,
+                isAdmin: false,
+                isVerified: true,
+                expirationTime: data.tokens[0]?.expires,
+                timeStamps: data.updatedAt,
+            });
+
+            navigate("/");
+        } catch (error) {
+            setErrors(error);
+        }
     };
 
     return (
@@ -66,7 +86,7 @@ export default function Login() {
                             <Input
                                 type="text"
                                 label="Email address"
-                                className="w-full text-slate-600 mb-2"
+                                className=" text-slate-600 mb-2"
                                 placeholder="Email address or username"
                                 id="exampleInputEmail1"
                                 ref={usernameRef}
@@ -84,7 +104,7 @@ export default function Login() {
                                 <Input
                                     type="password"
                                     label="Password"
-                                    className="w-full text-slate-600 mb-2"
+                                    className=" text-slate-600 mb-2"
                                     placeholder="Password"
                                     id="exampleInputPassword1"
                                     ref={passwordRef}
@@ -93,11 +113,11 @@ export default function Login() {
 
                             {/* <!-- Submit button --> */}
                             <Button
+                                bgColor={"bg-green-500 hover:bg-green-600"}
+                                text={"Login"}
                                 type={"submit"}
-                                className="w-full my-3 py-2.5  hover:text-slate-950 hover:bg-cyan-500"
-                            >
-                                Sign in
-                            </Button>
+                                className="my-3 py-2.5 "
+                            />
 
                             <div className="mb-5 mt-2 flex items-center justify-between">
                                 {/* <!-- Forgot password link --> */}

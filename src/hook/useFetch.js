@@ -1,55 +1,40 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 
-export function useFetch(url, config = null) {
+export const useFetch = (url, options = {}) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
-    const datas = useMemo(() => data, [data]);
-
-    const axiosInstance = useMemo(() => {
-        const instance = axios.create({
-            baseURL: url,
-        });
-        return instance;
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                const res = await axios(url, options);
+                setData(res.data);
+            } catch (err) {
+                setError(err);
+            }
+            setLoading(false);
+        };
+        fetchData();
     }, [url]);
 
-    if (config) {
-        axiosInstance.interceptors.request.use(
-            (config) => config,
-            (error) => Promise.reject(error)
-        );
-    }
+    const reFetch = () => {
+        setData([]);
+    };
 
-    const fetchData = useCallback(async () => {
-        setLoading(true);
-        try {
-            axiosInstance.defaults.timeout = 5000;
-            const response = await axiosInstance({
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                },
-                ...config,
-            });
-            setData(response.data);
-        } catch (error) {
-            setError(error);
-        } finally {
-            setLoading(false);
-        }
-    }, [axiosInstance, config]);
+    return { data, error, loading, reFetch };
+};
 
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
-
-    const refetch = useCallback(() => {
-        fetchData();
-    }, [fetchData]);
-
-    return { datas, loading, error, refetch };
-}
+useFetch.propTypes = {
+    url: PropTypes.string.isRequired,
+    object: PropTypes.shape({
+        method: PropTypes.string,
+        headers: PropTypes.object,
+        body: PropTypes.object,
+    }),
+};
 
 export default useFetch;
