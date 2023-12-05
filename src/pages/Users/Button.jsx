@@ -1,22 +1,29 @@
-// import { forwardRef } from "react";
 import PropTypes from "prop-types";
 
-export const Button = ({
+const Button = ({
     text,
     type,
     className,
     size,
     width,
     bgColor,
+    bgHoverColor,
     color,
+    colorHover,
     borderRadius,
+    disabled,
     ...props
 }) => {
     return (
         <button
-            {...props}
             type={type}
-            className={`${size} p-3 ${width} hover:drop-shadow-xl ${bgColor} ${color} ${borderRadius} ${className}`}
+            disabled={disabled}
+            className={`${size} p-3 ${width} border-0 hover:drop-shadow-xl ${bgColor}  ${color} ${borderRadius} ${className} ${
+                disabled
+                    ? "cursor-not-allowed bg-opacity-50 hover:bg-none hover:bg-opacity-50"
+                    : `hover:${bgHoverColor} hover:${colorHover}`
+            }`}
+            {...props}
         >
             {text}
         </button>
@@ -24,14 +31,17 @@ export const Button = ({
 };
 
 Button.propTypes = {
-    text: PropTypes.string,
+    text: PropTypes.any,
     type: PropTypes.string,
     className: PropTypes.string,
     size: PropTypes.string,
     width: PropTypes.string,
     bgColor: PropTypes.string,
+    bgHoverColor: PropTypes.string,
     color: PropTypes.string,
+    colorHover: PropTypes.string,
     borderRadius: PropTypes.string,
+    disabled: PropTypes.bool,
 };
 
 Button.defaultProps = {
@@ -41,8 +51,11 @@ Button.defaultProps = {
     size: "text-base",
     width: "w-full",
     bgColor: "bg-blue-400",
+    bgHoverColor: "hover:bg-blue-600",
     color: "text-white",
+    colorHover: "hover:text-gray-100",
     borderRadius: "rounded-md",
+    disabled: false,
 };
 
 export default Button;

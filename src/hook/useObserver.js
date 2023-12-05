@@ -1,7 +1,7 @@
 import { useCallback, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 
-export const useObserver = ({ threshold = 0, root, rootMargin }) => {
+export default function useObserver({ threshold, root, rootMargin }) {
     const [entry, setEntry] = useState(false);
 
     const observer = useMemo(() => {
@@ -33,7 +33,7 @@ export const useObserver = ({ threshold = 0, root, rootMargin }) => {
     );
 
     return [ref, entry];
-};
+}
 
 useObserver.propTypes = {
     threshold: PropTypes.number,
@@ -47,6 +47,4 @@ useObserver.defaultProps = {
     rootMargin: "0px",
 };
 
-useObserver.displayName = "useObserver";
-
-export default useObserver;
+// Path: src/pages/UseObserver.js

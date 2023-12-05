@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useContext } from "react";
 import PropTypes from "prop-types";
 
 export const StateContext = createContext();
@@ -9,8 +9,9 @@ const initialState = {
     userProfile: false,
     notification: false,
 };
+export const ContextState = () => useContext(StateContext);
 
-export const StateProvider = ({ children }) => {
+const StateProvider = ({ children }) => {
     const [screenSize, setScreenSize] = useState(undefined);
     const [currentColor, setCurrentColor] = useState("#03C9D7");
     const [currentMode, setCurrentMode] = useState("Light");
@@ -32,7 +33,6 @@ export const StateProvider = ({ children }) => {
         setIsClicked({ ...initialState, [clicked]: true });
 
     return (
-        // eslint-disable-next-line react/jsx-no-constructed-context-values
         <StateContext.Provider
             value={{
                 currentColor,
@@ -61,3 +61,5 @@ export const StateProvider = ({ children }) => {
 StateProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
+
+export default StateProvider;

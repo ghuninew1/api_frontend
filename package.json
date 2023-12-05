@@ -5,31 +5,38 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "server": "zsh ./run.zsh",
+        "dev2": "bunx --bun vite",
+        "start": "zsh ./run.zsh",
         "stop": "zsh ./stop.zsh",
+        "optimize": "vite optimizeDeps",
         "build": "vite build",
         "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
         "preview": "vite preview"
     },
     "dependencies": {
+        "axios": "^1.6.2",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "react-router-dom": "^6.20.0"
+        "react-router-dom": "^6.20.1"
     },
     "devDependencies": {
-        "@types/react": "^18.2.38",
+        "@types/react": "^18.2.42",
         "@types/react-dom": "^18.2.17",
-        "@vitejs/plugin-react": "^4.2.0",
+        "@vitejs/plugin-react": "^4.2.1",
         "autoprefixer": "^10.4.16",
-        "axios": "^1.6.2",
-        "eslint": "^8.54.0",
+        "eslint": "^8.55.0",
         "eslint-plugin-react": "^7.33.2",
         "eslint-plugin-react-hooks": "^4.6.0",
-        "eslint-plugin-react-refresh": "^0.4.4",
-        "postcss": "^8.4.31",
+        "eslint-plugin-react-refresh": "^0.4.5",
+        "postcss": "^8.4.32",
         "prop-types": "^15.8.1",
         "react-icons": "^4.12.0",
-        "tailwindcss": "^3.3.5",
-        "vite": "^5.0.2"
-    }
+        "tailwindcss": "^3.3.6",
+        "vite": "^5.0.5"
+    },
+    "description": "ghuninew1",
+    "main": "postcss.config.js",
+    "keywords": [],
+    "author": "GhuniNew",
+    "license": "ISC"
 }

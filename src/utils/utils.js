@@ -46,3 +46,13 @@ export const toElementByClass = (className) => {
         toElement(element);
     }
 };
+
+export const formatNumber = new Intl.NumberFormat("th", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 4,
+}).format;
+
+export const formatTime = new Intl.DateTimeFormat("th", {
+    dateStyle: "short",
+    timeStyle: "medium",
+}).format;

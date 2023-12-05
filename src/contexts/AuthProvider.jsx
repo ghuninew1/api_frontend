@@ -1,11 +1,6 @@
-import {
-    createContext,
-    useState,
-    useCallback,
-    useMemo,
-    useEffect,
-} from "react";
+import { createContext, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
+import useLocalStorage from "../hook/useLocalStorage";
 
 const initialUserState = {
     username: "",
@@ -15,8 +10,10 @@ const initialUserState = {
     isAdmin: false,
     isVerified: false,
     expirationTime: "",
+    updatedAt: "",
     timeStamps: "",
 };
+
 initialUserState.propTypes = {
     username: PropTypes.string,
     email: PropTypes.string,
@@ -25,88 +22,61 @@ initialUserState.propTypes = {
     isAdmin: PropTypes.bool,
     isVerified: PropTypes.bool,
     expirationTime: PropTypes.string,
+    updatedAt: PropTypes.string,
     timeStamps: PropTypes.string,
 };
 
 export const AuthContext = createContext({
     isUser: initialUserState,
-    changeUser: () => {},
+    SetLogin: () => {},
     SetLogout: () => {},
 });
 
 AuthContext.propTypes = {
-    isUser: PropTypes.shape({
-        username: PropTypes.string,
-        email: PropTypes.string,
-        token: PropTypes.string,
-        isLogIn: PropTypes.bool,
-        isAdmin: PropTypes.bool,
-        isVerified: PropTypes.bool,
-        expirationTime: PropTypes.string,
-        timeStamps: PropTypes.string,
-    }),
-    changeUser: PropTypes.func,
+    isUser: PropTypes.object,
+    SetLogin: PropTypes.func,
     SetLogout: PropTypes.func,
 };
 
-export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(initialUserState);
+export function AuthProvider({ children }) {
+    const [user, setUser] = useLocalStorage("user", initialUserState);
 
-    const SetLogout = useCallback(() => {
-        setUser(initialUserState);
-        localStorage.removeItem("user");
-    }, []);
-
-    useEffect(() => {
-        const userLocal = localStorage.getItem("user");
-        if (userLocal) {
-            setUser(JSON.parse(userLocal));
-        }
-    }, []);
-
-    useEffect(() => {
-        if (user.isLogIn && user.expirationTime > new Date().toISOString()) {
-            localStorage.setItem("user", JSON.stringify(user));
-        }
-    }, [user]);
-
-    const changeUser = useCallback(
+    const SetLogin = useCallback(
         (data) => {
-            setUser({
-                ...user,
+            setUser((prev) => ({
+                ...prev,
                 ...data,
-            });
+                isLogIn: true,
+                timeStamps: new Date().toISOString(),
+            }));
         },
-        [user]
+        [setUser]
     );
 
-    const isUser = useMemo(() => user, [user]);
+    const SetLogout = useCallback(() => {
+        setUser((prev) => ({
+            ...prev,
+            ...initialUserState,
+        }));
+    }, [setUser]);
+
+    const isUser = useMemo(() => {
+        return user;
+    }, [user]);
 
     return (
         <AuthContext.Provider
             value={{
                 isUser,
-                changeUser,
+                SetLogin,
                 SetLogout,
             }}
         >
             {children}
         </AuthContext.Provider>
     );
-};
+}
 
 AuthProvider.propTypes = {
     children: PropTypes.node.isRequired,
-    isUser: PropTypes.shape({
-        username: PropTypes.string,
-        email: PropTypes.string,
-        token: PropTypes.string,
-        isLogIn: PropTypes.bool,
-        isAdmin: PropTypes.bool,
-        isVerified: PropTypes.bool,
-        expirationTime: PropTypes.string,
-        timeStamps: PropTypes.string,
-    }),
-    changeUser: PropTypes.func,
-    SetLogout: PropTypes.func,
 };

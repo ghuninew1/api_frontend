@@ -1,33 +1,53 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Home, About, Contact, Login, Register } from "./pages";
-import { Error, Root, RouteRoot } from "./components";
+import {
+    Home,
+    About,
+    Contact,
+    Login,
+    Register,
+    UserProfile,
+    Report,
+} from "./pages";
+import { Error, RouteRoot, RouteProtected } from "./components";
 
 export default function App() {
     const route = createBrowserRouter([
         {
             path: "/",
-            element: <Root />,
+            element: <RouteRoot />,
             errorElement: <Error />,
             children: [
                 {
                     index: true,
                     path: "/",
-                    element: <Home />,
+                    element: (
+                        <RouteProtected>
+                            <Home />
+                        </RouteProtected>
+                    ),
                 },
                 {
                     path: "/about",
                     element: (
-                        <RouteRoot>
+                        <RouteProtected>
                             <About />
-                        </RouteRoot>
+                        </RouteProtected>
                     ),
                 },
                 {
                     path: "/contact",
                     element: (
-                        <RouteRoot>
+                        <RouteProtected>
                             <Contact />
-                        </RouteRoot>
+                        </RouteProtected>
+                    ),
+                },
+                {
+                    path: "/report",
+                    element: (
+                        <RouteProtected>
+                            <Report />
+                        </RouteProtected>
                     ),
                 },
                 {
@@ -37,6 +57,14 @@ export default function App() {
                 {
                     path: "/register",
                     element: <Register />,
+                },
+                {
+                    path: "/profile",
+                    element: (
+                        <RouteProtected>
+                            <UserProfile />
+                        </RouteProtected>
+                    ),
                 },
             ],
         },

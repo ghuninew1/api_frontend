@@ -1,73 +1,95 @@
-import { useMemo, useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import { useState, useEffect } from "react";
+import { api } from "../services/makeRequest";
 import PropTypes from "prop-types";
 
-export const getAxios = async (url, options = {}) => {
-    const { method = "get", body = null, headers = {} } = options;
-
-    return await axios({
-        method,
-        url,
-        data: body,
-        headers,
-    });
-};
-getAxios.propTypes = {
-    url: PropTypes.string.isRequired,
-    options: PropTypes.shape({
-        method: PropTypes.string,
-        headers: PropTypes.object,
-        body: PropTypes.object,
-    }),
-};
-
-export const useAxios = (url, config) => {
-    const [data, setData] = useState([]);
-    const [error, setError] = useState(null);
+export function useAxios({ method, url, config = {} }) {
+    const [response, setResponse] = useState([]);
+    const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
-    const { method = "get", body = null, headers = {} } = config;
+    const [reload, setReload] = useState(0);
 
-    const fetchData = useCallback(async () => {
-        if (!url) return;
-        setLoading(true);
-        await getAxios(url, { method, body, headers })
-            .then((res) => {
-                setData(res.data);
-            })
-            .catch((err) => {
-                setError(err);
-                setLoading(false);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    }, [url, method, body, headers]);
+    const refetch = () => setReload((prev) => prev + 1);
 
     useEffect(() => {
-        if (url) fetchData();
+        //let isMounted = true;
+        const controller = new AbortController();
 
-        return () => {};
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [method, url]);
+        const fetchData = async () => {
+            try {
+                const res = await api[method.toLowerCase()](url, {
+                    ...config,
+                    signal: controller.signal,
+                });
+                res.data && setResponse(res.data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const reFetch = useCallback(() => {
+        // call the function
         fetchData();
-    }, [fetchData]);
 
-    return useMemo(
-        () => ({ data, error, loading, reFetch }),
-        [data, error, loading, reFetch]
-    );
-    // return { data, error, loading, reFetch };
-};
+        // useEffect cleanup function
+        return () => controller && controller.abort();
+
+        // eslint-disable-next-line
+    }, [reload]);
+
+    return [response, error, loading, refetch];
+}
 
 useAxios.propTypes = {
-    url: PropTypes.string.isRequired,
-    config: PropTypes.shape({
-        method: PropTypes.string,
-        headers: PropTypes.object,
-        body: PropTypes.object,
-    }),
+    method: PropTypes.string,
+    url: PropTypes.string,
+    config: PropTypes.object,
 };
+
+useAxios.defaultProps = {
+    method: "get",
+    url: "/",
+    config: {},
+};
+// Path: src/pages/UseAxios.js
+
+export function useAxiosFn() {
+    const [response, setResponse] = useState([]);
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false); //different!
+    const [controller, setController] = useState();
+
+    const axiosFetch = async ({ method, url, config = {} }) => {
+        try {
+            setLoading(true);
+            const ctrl = new AbortController();
+            setController(ctrl);
+            const res = await api[method.toLowerCase()](url, {
+                ...config,
+                signal: ctrl.signal || controller.signal,
+            });
+            res.data && setResponse(res.data);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    axiosFetch.propTypes = {
+        method: PropTypes.string,
+        url: PropTypes.string,
+        config: PropTypes.object,
+    };
+
+    useEffect(() => {
+        // console.log(controller);
+
+        // useEffect cleanup function
+        return () => controller && controller.abort();
+    }, [controller]);
+
+    return [response, error, loading, axiosFetch];
+}
 
 export default useAxios;

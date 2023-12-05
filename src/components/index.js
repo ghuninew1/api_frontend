@@ -1,15 +1,10 @@
 export { default as Navbar } from "./Navbar";
 export { default as Footer } from "./Footer";
-export { default as Root } from "./Root";
-export { default as Input } from "./Input";
-export { default as Button } from "./Button";
-export { default as Error, ShowError } from "./Error";
-export {
-    default as Auth,
-    LogedIn,
-    Logout,
-    Register,
-    CurrentUser,
-    ResetPassword,
-} from "./Auth";
-export { default as RouteRoot } from "./RouteRoot";
+export { default as RouteRoot } from "./Routes/RouteRoot";
+export { default as Error } from "./Error";
+export { default as ShowError } from "./ShowError";
+export { default as RouteProtected } from "./Routes/RouteProtected";
+export { default as Loading } from "./Loading";
+export { default as Observer } from "./Observer";
+export { default as ToTop } from "./ToTop";
+export { default as CircularProgressBar } from "./CircularProgressBar";

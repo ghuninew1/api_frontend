@@ -1,18 +1,16 @@
 import { cx } from "../utils/utils";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
     return (
         <footer
-            className={cx("flex items-center justify-center h-10 bg-primary")}
+            className={cx("flex items-center justify-center h-10 bg-black")}
         >
             <div className="w-full p-2 text-sm text-center text-neutral-400">
                 © 2023 Copyright:
-                <a
-                    className="text-neutral-300 ml-2"
-                    href="https://tw-elements.com/"
-                >
+                <Link className="text-neutral-300 ml-2" to={"/"}>
                     GhuniNew©
-                </a>
+                </Link>
             </div>
         </footer>
     );
