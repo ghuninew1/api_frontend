@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoMenuOutline, IoClose, IoWater } from "react-icons/io5";
 import { navLinks } from "../../assets/navLinks";
-import useAuth from "../../contexts/useAuth";
+import { useAuth } from "../../contexts/useAuth";
 import Menu from "./Menu";
 import Dropdown from "./dropdown";
 

@@ -1,5 +1,6 @@
-import useObserver from "../hook/useObserver";
+import { useObserver } from "../hook/useObserver";
 import { Observer } from "../components";
+import { cx } from "../utils/utils";
 // import React, { useRef } from "react";
 
 export default function About() {
@@ -19,7 +20,7 @@ export default function About() {
 
             {refs.map((_, index) => (
                 <Observer key={index + "-div"} className="bg-slate-700 h-400">
-                    <div className="m-7">
+                    <div className={cx(entry && "anim-fade-in-left")}>
                         <div className="h-[200px] my-[20px] bg-red-600 m-7 anim-fade-in-left">
                             <h1>Header + {index}</h1>
                         </div>

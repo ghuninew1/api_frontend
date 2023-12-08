@@ -1,14 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import {
-    Home,
-    About,
-    Contact,
-    Login,
-    Register,
-    UserProfile,
-    Report,
-} from "./pages";
-import { Error, RouteRoot, RouteProtected } from "./components";
+import { Error, RouteRoot, RouteUser } from "./components";
+import { useAuth } from "./contexts/useAuth";
+import { navLinks } from "./components/SideBar/navLinks";
 
 export default function App() {
     const route = createBrowserRouter([
@@ -16,57 +9,12 @@ export default function App() {
             path: "/",
             element: <RouteRoot />,
             errorElement: <Error />,
-            children: [
-                {
-                    index: true,
-                    path: "/",
-                    element: (
-                        <RouteProtected>
-                            <Home />
-                        </RouteProtected>
-                    ),
-                },
-                {
-                    path: "/about",
-                    element: (
-                        <RouteProtected>
-                            <About />
-                        </RouteProtected>
-                    ),
-                },
-                {
-                    path: "/contact",
-                    element: (
-                        <RouteProtected>
-                            <Contact />
-                        </RouteProtected>
-                    ),
-                },
-                {
-                    path: "/report",
-                    element: (
-                        <RouteProtected>
-                            <Report />
-                        </RouteProtected>
-                    ),
-                },
-                {
-                    path: "/login",
-                    element: <Login />,
-                },
-                {
-                    path: "/register",
-                    element: <Register />,
-                },
-                {
-                    path: "/profile",
-                    element: (
-                        <RouteProtected>
-                            <UserProfile />
-                        </RouteProtected>
-                    ),
-                },
-            ],
+            children: navLinks.map((link) => ({
+                path: link.to,
+                index: link.to === "/",
+
+                element: <RouteUser>{link.element}</RouteUser>,
+            })),
         },
     ]);
     return <RouterProvider router={route} />;

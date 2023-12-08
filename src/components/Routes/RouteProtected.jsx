@@ -1,4 +1,4 @@
-import useAuth from "../../contexts/useAuth";
+import { useAuth } from "../../contexts/useAuth";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useEffect } from "react";

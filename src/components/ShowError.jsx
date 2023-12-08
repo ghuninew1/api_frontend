@@ -10,12 +10,12 @@ export default function ShowError({ error, setError }) {
 
     return (
         <div
-            className="absolute top-0 cursor-pointer w-full bg-red-200/10 flex justify-center items-center"
+            className="absolute top-0 left-0 mt-3 w-full flex justify-center items-center"
             onClick={() => {
                 setError(null);
             }}
         >
-            <h2 className="text-center text-red-700 text-xl">{error}</h2>
+            <h2 className="text-center text-red-700 text-base">{error}</h2>
         </div>
     );
 }

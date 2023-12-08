@@ -1,23 +1,16 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 
-function useInput(initialValue = "") {
+export function useInput(initialValue) {
     const [value, setValue] = useState(initialValue);
 
-    const onChange = useCallback((event) => {
-        const { value } = event.target;
-        value && setValue(value);
-    }, []);
+    function handleChange(e) {
+        setValue(e.target.value);
+    }
 
-    const clearValue = useCallback(
-        () => setValue(initialValue || ""),
-        [initialValue]
-    );
+    const inputProps = {
+        value: value,
+        onChange: handleChange,
+    };
 
-    return [value, onChange, clearValue];
+    return inputProps;
 }
-
-export default useInput;
-
-//Usage
-// Path: src/components/MyComponent.js
-// import useInput from "../hooks/useInput";

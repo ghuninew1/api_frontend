@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import PropTypes from "prop-types";
-import useObserver from "../hook/useObserver";
+import { useObserver } from "../hook/useObserver";
 
 export const ObserverRef = forwardRef(({ children, ...props }, ref) => {
     const [observerRef, entry] = useObserver(props);

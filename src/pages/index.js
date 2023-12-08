@@ -5,3 +5,5 @@ export { default as Login } from "./Users/Login";
 export { default as Register } from "./Users/Register";
 export { default as UserProfile } from "./Users/UserProfile.jsx";
 export { default as Report } from "./Report";
+export { default as TableData } from "./TableData";
+export { default as Timeline } from "./Timeline/Timeline.jsx";

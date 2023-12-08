@@ -1,25 +1,44 @@
 /** @type {import('tailwindcss').Config} */
 import plugin from "tailwindcss/plugin";
+
 export default {
     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+    darkMode: "class",
     theme: {
         extend: {
             colors: {
-                main: "#F2F2F2",
-                primary: "#0D0D0D",
-                secondary: "#1A1A1A",
+                transparent: "transparent",
+                current: "currentColor",
+                gray: {
+                    900: "#202225",
+                    800: "#2f3136",
+                    700: "#36393f",
+                    600: "#4f545c",
+                    400: "#d4d7dc",
+                    300: "#e3e5e8",
+                    200: "#ebedef",
+                    100: "#f2f3f5",
+                },
+                green: {
+                    900: "#0a8c00",
+                    800: "#0daa00",
+                    700: "#0fc700",
+                    600: "#0fd900",
+                    500: "#0fe600",
+                    400: "#0ff200",
+                    300: "#1cff00",
+                    200: "#3dff00",
+                    100: "#6aff00",
+                },
+
+                primary: "#0a8c00",
+                secondary: "#0daa00",
             },
             fontSize: {
                 10: "10px",
                 12: "12px",
                 14: "14px",
                 18: "18px",
-            },
-            backgroundColor: {
-                "main-bg": "#0D0D0D",
-                "main-dark-bg": "#0D0D0D",
-                "secondary-dark-bg": "#1A1A1A",
-                "half-transparent": "rgba(0, 0, 0, 0.5)",
             },
             borderWidth: {
                 1: "1px",
@@ -40,6 +59,7 @@ export default {
             height: {
                 1: "1em",
                 2: "2em",
+                2.5: "2.5em",
                 3: "3em",
                 4: "4em",
                 5: "5em",
@@ -55,26 +75,18 @@ export default {
                 900: "900px",
                 1000: "1000px",
             },
-            minHeight: {
-                400: "400px",
-                500: "500px",
-                590: "590px",
+            spacing: {
+                88: "22rem",
             },
         },
     },
     plugins: [
         plugin(function ({ addComponents }) {
             addComponents({
-                ".divider": {
-                    width: "100%",
-                    height: "1px",
-                    backgroundColor: "#1A1A1A",
+                ".anim-arrow-idle": {
+                    animation: "arrowIdle 2s ease infinite",
                 },
-                ".card": {
-                    backgroundColor: "#1A1A1A",
-                    borderRadius: "10px",
-                    boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.25)",
-                },
+
                 ".anim-zoom-out": {
                     animation: "zoomOut 0.8s ease",
                     animationIterationCount: "1",

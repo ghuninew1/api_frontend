@@ -1,9 +1,9 @@
 import { MdOutlineEdit, MdAccountCircle } from "react-icons/md";
 
 import Button from "./Button";
-import useAuth from "../../contexts/useAuth";
+import { useAuth } from "../../contexts/useAuth";
 import { useNavigate } from "react-router-dom";
-import useAxios, { useAxiosFn } from "../../hook/useAxios";
+import { useAxios } from "../../hook/useAxios";
 import { useState, useEffect } from "react";
 
 const UserProfile = () => {
@@ -38,7 +38,6 @@ const UserProfile = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         // getData();
-        console.log(getAxios);
         setGetUser({
             email: getAxios[0][0].email,
             createdAt: getAxios[0][0].createdAt,

@@ -18,11 +18,7 @@ const Button = ({
         <button
             type={type}
             disabled={disabled}
-            className={`${size} p-3 ${width} border-0 hover:drop-shadow-xl ${bgColor}  ${color} ${borderRadius} ${className} ${
-                disabled
-                    ? "cursor-not-allowed bg-opacity-50 hover:bg-none hover:bg-opacity-50"
-                    : `hover:${bgHoverColor} hover:${colorHover}`
-            }`}
+            className={`${size} p-3 ${width} border-0 hover:drop-shadow-xl ${bgColor}  ${color} ${borderRadius} ${className} ${bgHoverColor} ${colorHover}`}
             {...props}
         >
             {text}

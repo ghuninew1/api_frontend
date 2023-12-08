@@ -3,6 +3,17 @@
 @tailwind utilities;
 
 @layer components {
+    @keyframes arrowIdle {
+        0% {
+            transform: translateX(0px);
+        }
+        50% {
+            transform: translateX(10px);
+        }
+        100% {
+            transform: translateX(0px);
+        }
+    }
     @keyframes zoomOut {
         0% {
             opacity: 1;

@@ -1,6 +1,6 @@
 import { createContext, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
-import useLocalStorage from "../hook/useLocalStorage";
+import { useLocalStorage } from "../hook/useLocalStorage";
 
 const initialUserState = {
     username: "",

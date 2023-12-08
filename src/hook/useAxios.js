@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { api } from "../services/makeRequest";
+import api from "../services/api";
 import PropTypes from "prop-types";
 
 export function useAxios({ method, url, config = {} }) {
@@ -68,7 +68,7 @@ export function useAxiosFn() {
                 ...config,
                 signal: ctrl.signal || controller.signal,
             });
-            res.data && setResponse(res.data);
+            res.data && Promise.resolve(setResponse(res.data));
         } catch (err) {
             setError(err.message);
         } finally {

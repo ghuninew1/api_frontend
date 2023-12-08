@@ -1,6 +1,10 @@
-export const cx = (...classNames) => classNames.filter(Boolean).join(" ");
+export function cx(...classNames) {
+    return classNames.filter(Boolean).join(" ");
+}
 
-export const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+export function wait(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 export const delay = (s = 1000, fn) => {
     return new Promise((resolve) => {

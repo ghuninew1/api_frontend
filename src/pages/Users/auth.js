@@ -1,16 +1,14 @@
-import { api } from "../../services/makeRequest";
+import api from "../../services/api";
 
-export async function MakeLogin(username, password) {
+export async function makeLogin(username, password) {
     try {
         const res = await api.post("/auth/login", {
             username,
             password,
         });
-        if (res.status === 200 && res.data) {
-            return Promise.resolve(res.data);
-        } else {
-            return await Promise.reject(res.data);
-        }
+        return res.status === 200 || res.status === 201
+            ? await Promise.resolve(res.data)
+            : await Promise.reject(res.data);
     } catch (error) {
         return await Promise.reject(
             error?.response?.data?.message ?? error?.message
@@ -26,7 +24,7 @@ export async function makeRegister(username, password, email) {
             email,
         });
         if (response.status === 200) {
-            return Promise.resolve(response.data);
+            return await Promise.resolve(response.data);
         } else {
             return await Promise.reject(response.data);
         }

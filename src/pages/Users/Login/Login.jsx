@@ -1,46 +1,53 @@
-import { useRef, useState } from "react";
+import { useState, useEffect } from "react";
 import { ShowError } from "../../../components";
 // import { cx } from "../../../utils/utils";
-import useAuth from "../../../contexts/useAuth";
-import { useNavigate, Link, useLocation } from "react-router-dom";
-import { MakeLogin } from "../../Users/auth";
+import { useAuth } from "../../../contexts/useAuth";
+// import { useInput } from "../../../hook/useInput";
+import {
+    AiOutlineArrowRight,
+    AiOutlineKey,
+    AiOutlineUser,
+} from "react-icons/ai";
+
+import { Link, useNavigate } from "react-router-dom";
+import { makeLogin } from "../../Users/auth";
 import { BiHide } from "react-icons/bi";
-import Input from "../Input";
-import Button from "../Button";
+import { Button } from "../../../components/button";
 
 export default function Login() {
     const [errors, setErrors] = useState(null);
-    const { SetLogin } = useAuth();
-    const usernameRef = useRef(null);
-    const passwordRef = useRef(null);
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
+    const { isUser, SetLogin } = useAuth();
+
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isUser?.isLogIn === true && isUser?.token) {
+            navigate("/", { replace: true });
+        }
+    }, [navigate, isUser]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const username = usernameRef.current?.value;
-        const passwordData = passwordRef.current?.value;
+        const username = e.target.username.value;
+        const passwordData = e.target.password.value;
+
         if (
             (username === "" || username == null) &&
             (passwordData === "" || passwordData == null)
         ) {
             setErrors("Username and password are required");
             return;
-        } else if (username === "" || username == null) {
+        }
+
+        if (username === "" || username == null) {
             setErrors("Username is required");
             return;
-        } else if (passwordData === "" || passwordData == null) {
-            setErrors("Password is required");
-            return;
-        } else if (passwordData.length < 6) {
-            setErrors("Password must be at least 6 characters");
-            return;
         }
-        try {
-            const res = await MakeLogin(username, passwordData);
 
-            if (res.username === username) {
+        try {
+            const res = await makeLogin(username, passwordData);
+
+            if (res && res.username == username) {
                 SetLogin({
                     username: res.username,
                     email: res.email,
@@ -51,8 +58,6 @@ export default function Login() {
                     updatedAt: res.updatedAt,
                     timeStamps: Date.now(),
                 });
-
-                navigate(from);
             } else {
                 setErrors(res || "Something went wrong");
             }
@@ -64,9 +69,9 @@ export default function Login() {
     return (
         <div className="min-h-[70vh] flex justify-center items-center w-full mx-auto anim-zoom-in-down">
             <div className="flex justify-center w-full">
-                <div className="flex flex-col items-center overflow-hidden  bg-slate-800/30 border-gray-700/50 shadow-xl rounded-lg">
-                    <h1 className="mt-5 text-3xl font-bold text-center text-slate-300 tracking-wider">
-                        Welcome
+                <div className="flex flex-col items-center overflow-hidden border-gray-700 shadow-md drop-shadow-md shadow-gray-900 rounded-xl dark:bg-neutral-900/50 bg-gray-300 dark:border-neutral-800 dark:text-neutral-200">
+                    <h1 className="mt-5 text-3xl font-bold text-center text-slate-700 dark:text-slate-300 tracking-wider">
+                        Login
                     </h1>
 
                     {/* <!-- Right column container with form --> */}
@@ -78,21 +83,19 @@ export default function Login() {
                         >
                             {/* <!-- Email input --> */}
                             <div
-                                className="relative mb-3"
+                                className="relative mb-4 text-sm"
                                 data-te-input-wrapper-init
                             >
-                                <Input
+                                <AiOutlineUser className="absolute left-2 top-2 text-slate-500 dark:text-neutral-200" />
+                                <input
                                     type="text"
-                                    className="peer w-full bg-transparent py-[0.32rem] leading-[1.6] outline-slate-500/50 transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                                    id="formUsername"
+                                    className="p-2 pl-8 rounded-md border-2 border-gray-300/5 peer w-full bg-transparent py-[0.32rem] leading-[1.6] outline-slate-400/50 transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                     data-te-input-showcounter="true"
                                     placeholder="Email address or username"
-                                    ref={usernameRef}
+                                    name="username"
+                                    required
                                 />
-                                <label
-                                    htmlFor="formUsername"
-                                    className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
-                                >
+                                <label className="pointer-events-none absolute left-0 top-0 pl-8 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.7rem] peer-focus:scale-[1] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.7rem] peer-data-[te-input-state-active]:scale-[1] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
                                     Username or Email
                                 </label>
                                 <div
@@ -105,21 +108,20 @@ export default function Login() {
 
                             <div className="relative w-full mt-5">
                                 <div
-                                    className="relative mb-3"
+                                    className="relative mb-3 text-sm"
                                     data-te-input-wrapper-init
                                 >
-                                    <Input
+                                    <AiOutlineKey className="absolute left-2 top-2 text-slate-500 dark:text-neutral-200" />
+                                    <input
                                         type="password"
-                                        className="peer  w-full bg-transparent py-[0.32rem] leading-[1.6] transition-all duration-200 ease-linear outline-slate-500/50 focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                                        id="forPassword"
+                                        className="p-2 pl-8 rounded-md border-2 border-gray-300/5 peer w-full bg-transparent py-[0.32rem] leading-[1.6] transition-all duration-200 ease-linear outline-slate-500/50 focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                         placeholder="Password"
                                         data-te-input-showcounter="true"
-                                        ref={passwordRef}
+                                        name="password"
+                                        required
+                                        minLength={6}
                                     />
-                                    <label
-                                        htmlFor="forPassword"
-                                        className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
-                                    >
+                                    <label className="pointer-events-none absolute left-0 pl-8 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.7rem] peer-focus:scale-[1] peer-focus:text-primary peer-data-[te-input-state-active]:-translate-y-[1.7rem] peer-data-[te-input-state-active]:scale-[1] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary">
                                         Password
                                     </label>
                                     <div
@@ -127,17 +129,12 @@ export default function Login() {
                                         data-te-input-helper-ref
                                     ></div>
                                 </div>
-                                {/* <Input
-                                    type="password"
-                                    label="Password"
-                                    className=" text-slate-600 mb-2"
-                                    placeholder="Password"
-                                    ref={passwordRef}
-                                /> */}
+
                                 <span
                                     className="absolute right-2 top-2 text-slate-500 hover:text-slate-400 h-5 w-5"
                                     onClick={() => {
-                                        const password = passwordRef.current;
+                                        const password =
+                                            document.querySelector("#password");
                                         if (password.type === "password") {
                                             password.type = "text";
                                         } else {
@@ -150,16 +147,15 @@ export default function Login() {
                             </div>
 
                             {/* <!-- Submit button --> */}
-                            <Button
-                                color={"text-stark-900 font-bold"}
-                                bgColor={"bg-green-500"}
-                                bgHoverColor={"bg-green-700"}
-                                text={"Login"}
-                                type={"submit"}
-                                className="my-2"
-                            />
+                            <Button className="w-full" type={"submit"}>
+                                Log in{" "}
+                                <AiOutlineArrowRight
+                                    className="anim-arrow-idle"
+                                    size={30}
+                                />
+                            </Button>
 
-                            <div className="mb-4 flex items-center justify-between">
+                            <div className="my-3 flex items-center justify-between">
                                 {/* <!-- Forgot password link --> */}
                                 <Link
                                     to={"#"}
@@ -176,7 +172,7 @@ export default function Login() {
                             </div>
 
                             {/* <!-- Divider --> */}
-                            <div className="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
+                            <div className="my-2 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
                                 <p className="mx-4 mb-0 text-center font-semibold dark:text-neutral-200">
                                     OR
                                 </p>
@@ -184,13 +180,11 @@ export default function Login() {
 
                             {/* <!-- Social login buttons --> */}
                             <div className="w-full">
-                                <a
-                                    className="bg-[#3b5998] hover:bg-[#233b71] mb-3 flex w-full items-center justify-center rounded px-7 pb-2.5 pt-3 text-center text-sm font-medium  "
-                                    href="#!"
-                                >
-                                    {/* <!-- Facebook --> */}
-                                    Continue with Facebook
-                                </a>
+                                <Button className="w-full">
+                                    Log in with Google{" "}
+                                    <AiOutlineArrowRight className="" />
+                                </Button>
+                                {/* <!-- Facebook --> */}
                             </div>
                         </form>
                     </div>
