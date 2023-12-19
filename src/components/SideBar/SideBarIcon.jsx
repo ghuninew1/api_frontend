@@ -2,8 +2,17 @@ import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 import { cx } from "../../utils/utils";
 
-const SideBarIcon = ({ icon, text = "tooltip 💡", to, ...props }) => (
-    <div className="relative flex items-center justify-center h-12 w-12 mt-2 mb-2 mx-auto bg-gray-400 hover:bg-green-600 dark:bg-gray-800 text-green-500 hover:text-white hover:rounded-xl rounded-3xl transition-all duration-300 ease-linear cursor-pointer shadow-lg group">
+export const SideBarIcon = ({
+    icon,
+    text = "tooltip 💡",
+    to,
+    onClick,
+    ...props
+}) => (
+    <div
+        className="relative flex items-center justify-center h-12 w-12 mt-2 mb-2 mx-auto bg-gray-400 hover:bg-green-600 dark:bg-gray-800 text-green-500 hover:text-white hover:rounded-xl rounded-3xl transition-all duration-300 ease-linear cursor-pointer shadow-lg group"
+        onClick={onClick}
+    >
         <NavLink
             {...props}
             to={to || "/"}
@@ -24,9 +33,8 @@ const SideBarIcon = ({ icon, text = "tooltip 💡", to, ...props }) => (
 );
 
 SideBarIcon.propTypes = {
-    icon: PropTypes.element.isRequired,
+    icon: PropTypes.element,
     text: PropTypes.string,
     to: PropTypes.string,
+    onClick: PropTypes.func,
 };
-
-export default SideBarIcon;

@@ -1,18 +1,22 @@
 import { useEffect } from "react";
-import { useLocalStorage } from "./useLocalStorage";
+import { useToggle } from "./useToggle";
 
 export const useDarkMode = () => {
-    const [enabled, setEnabled] = useLocalStorage("dark-theme");
-    const isEnabled = typeof enabledState === "undefined" && enabled;
+    const [theme, toggleTheme] = useToggle("dark-theme");
+    const isEnabled = typeof enabledState === "undefined" && theme;
 
     useEffect(() => {
         const className = "dark";
         const bodyClass = window.document.body.classList;
 
         isEnabled ? bodyClass.add(className) : bodyClass.remove(className);
-    }, [enabled, isEnabled]);
 
-    return [enabled, setEnabled];
+        return () => {
+            bodyClass.remove(className);
+        };
+    }, [isEnabled]);
+
+    return [theme, toggleTheme];
 };
 
 export default useDarkMode;

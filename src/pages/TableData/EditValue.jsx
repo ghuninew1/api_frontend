@@ -1,7 +1,5 @@
 import PropTypes from "prop-types";
-import InputText from "./InputText";
-import { makePut } from "../../services/api";
-import { Button } from "../../components/button";
+import Button from "#components/Button";
 
 export default function EditValue({ item, refetch, setEdit }) {
     async function handleSubmit(e) {
@@ -21,8 +19,6 @@ export default function EditValue({ item, refetch, setEdit }) {
             img: e.target.img.value,
             status: true,
         };
-
-        await makePut(item._id, data);
 
         refetch();
         setEdit();

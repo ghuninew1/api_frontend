@@ -58,28 +58,4 @@ useAsyncFn.propTypes = {
     dependencies: PropTypes.array,
 };
 
-export function useAsyncEffect(func, dependencies = []) {
-    const { execute } = useAsyncInternal(func, dependencies, false);
-
-    useEffect(() => {
-        execute();
-    }, [execute]);
-}
-
-useAsyncEffect.propTypes = {
-    func: PropTypes.func,
-    dependencies: PropTypes.array,
-};
-
-export function useAsyncMemo(func, dependencies = []) {
-    const { value } = useAsyncInternal(func, dependencies, false);
-
-    return value;
-}
-
-useAsyncMemo.propTypes = {
-    func: PropTypes.func,
-    dependencies: PropTypes.array,
-};
-
 export default useAsync;

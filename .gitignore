@@ -134,3 +134,7 @@ dist
 ###
 run.zsh
 stop.zsh
+cf.sh
+.sh
+src/client_secret.json
+client_secret.json

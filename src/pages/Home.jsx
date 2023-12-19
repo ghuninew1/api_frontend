@@ -1,43 +1,56 @@
-// import React from "react";
-// import { useIntersectionObserver } from "../hook/useHook.js";
-// import { GetData } from "../components/Auth";
-import { Button } from "../components/button";
-import LoginForm from "../components/LoginForm";
+import Button from "#components/Button";
+import { cx } from "#utils/utils.js";
+import { Link } from "react-router-dom";
+// import { useState, useEffect } from "react";
 
 export default function Home() {
-    // const { data, error, loading } = LogedIn({
-    //     username: "gnew",
-    //     password: "new@4248085",
-    // });
-    // console.log(data, error, loading);
-
-    // const { data, error, loading, reFetch } = GetData();
-    // console.log(data, error, loading);
-
-    const tableData = [
-        {
-            id: "1",
-            Name: "gnew",
-            IP: "192.168.1.100",
-            LastWriteTime: "2021-09-14T08:04:54.000Z",
-        },
-        {
-            id: "2",
-            Name: "gnew",
-            IP: "192.168.1.101",
-            LastWriteTime: "2021-09-14T08:04:54.000Z",
-        },
-        {
-            id: "3",
-            Name: "gnew",
-            IP: "",
-            LastWriteTime: "2021-09-14T08:04:54.000Z",
-        },
-    ];
-
     return (
-        <div className="anim-zoom-in pt-9">
-            <div className="flex flex-col items-center justify-center "></div>
+        <div className="animate-zoomIn p-5">
+            <div className="flex flex-col items-center justify-center max-w-4xl">
+                <div className="text-3xl font-bold text-center">
+                    <h1>Home</h1>
+                </div>
+                <div className={cx("text-4xl font-bold text-center")}>
+                    <Link to="auth/facebook">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-blue-500 border-blue-500"
+                        >
+                            Login
+                        </Button>
+                    </Link>
+                </div>
+                {/* {getDatas?.img && (
+                    <div className="w-1/4 my-5">
+                        <img
+                            src={getDatas?.img}
+                            alt=""
+                            className="rounded-3xl shadow-xl"
+                        />
+                    </div>
+                )}
+                <div className="w-full p-10">
+                    <ul className="text-xl text-red-600 mb-3 max-w-[800px] mx-auto">
+                        {getDatas &&
+                            Object.values(getDatas).map((item, idx) => (
+                                <li key={idx}>
+                                    <span className="text-green-500 mr-3 ">
+                                        {Object.keys(getDatas)[idx]}: &nbsp;
+                                    </span>
+                                    <span
+                                        className="text-red-500 cursor-pointer"
+                                        onClick={() => {
+                                            setPath(item);
+                                        }}
+                                    >
+                                        {item} &nbsp;
+                                    </span>
+                                </li>
+                            ))}
+                    </ul>
+                </div> */}
+            </div>
         </div>
     );
 }

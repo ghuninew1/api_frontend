@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import propTypes from "prop-types";
 
-export function useLogin(initialState = {}) {
+export default function useForm(initialState = {}) {
     const [form, setForm] = useState(initialState);
 
     const handleInputChange = useCallback(({ target }) => {
@@ -18,9 +18,6 @@ export function useLogin(initialState = {}) {
     return [form, handleInputChange, reset];
 }
 
-useLogin.propTypes = {
+useForm.propTypes = {
     initialState: propTypes.object.isRequired,
 };
-
-// Usage
-// Path: src/pages/Login.js

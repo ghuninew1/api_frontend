@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import api from "../services/api";
+import api from "#api";
 import PropTypes from "prop-types";
 
 export function useAxios({ method, url, config = {} }) {
@@ -28,14 +28,10 @@ export function useAxios({ method, url, config = {} }) {
             }
         };
 
-        // call the function
         fetchData();
 
-        // useEffect cleanup function
         return () => controller && controller.abort();
-
-        // eslint-disable-next-line
-    }, [reload]);
+    }, [config, method, reload, url]);
 
     return [response, error, loading, refetch];
 }

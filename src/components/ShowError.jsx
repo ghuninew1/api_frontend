@@ -4,19 +4,15 @@ import PropTypes from "prop-types";
 export default function ShowError({ error, setError }) {
     if (error == null || error === "") return;
 
-    // wait(4000).then(() => {
-    //     setError(null);
-    // });
-
     return (
-        <div
-            className="absolute top-0 left-0 mt-3 w-full flex justify-center items-center"
+        <section
+            className="absolute top-0 left-0 w-full flex justify-center items-center"
             onClick={() => {
                 setError(null);
             }}
         >
-            <h2 className="text-center text-red-700 text-base">{error}</h2>
-        </div>
+            <h2 className="text-center text-red-700 text-sm">{error}</h2>
+        </section>
     );
 }
 ShowError.propTypes = {

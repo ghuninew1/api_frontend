@@ -1,9 +1,8 @@
 import PropTypes from "prop-types";
-import { Button } from "../../components/button";
-import { cx } from "../../utils/utils";
+import Button from "#components/Button";
+import { cx } from "#utils/utils";
 import { AiFillSave, AiFillCloseCircle } from "react-icons/ai";
 import InputText from "./InputText";
-import { makePost } from "../../services/api";
 
 export default function AddValue({ refetch, setAdd }) {
     async function handleSubmit(e) {
@@ -22,8 +21,6 @@ export default function AddValue({ refetch, setAdd }) {
             subscribes: e.target.subscribes.value,
             img: e.target.img.value,
         };
-
-        await makePost(data);
 
         refetch();
         // setAdd(false);

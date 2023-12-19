@@ -1,8 +1,12 @@
-import { useCallback, useState, useMemo } from "react";
-import PropTypes from "prop-types";
+import { useState, useMemo, useRef, useCallback } from "react";
 
-export function useObserver({ threshold, root, rootMargin }) {
+export function useObserver({
+    threshold = 0,
+    root = null,
+    rootMargin = "0px",
+}) {
     const [entry, setEntry] = useState(false);
+    const nodeRef = useRef(null);
 
     const observer = useMemo(() => {
         if (typeof IntersectionObserver !== "undefined") {
@@ -19,32 +23,22 @@ export function useObserver({ threshold, root, rootMargin }) {
         }
     }, [threshold, root, rootMargin]);
 
-    const ref = useCallback(
+    const setNodeRef = useCallback(
         (node) => {
-            if (observer) {
-                observer.disconnect();
+            if (nodeRef.current) {
+                observer.unobserve(nodeRef.current);
             }
 
             if (node) {
-                observer?.observe(node);
+                observer.observe(node);
             }
+
+            nodeRef.current = node;
         },
         [observer]
     );
 
-    return [ref, entry];
+    return [setNodeRef, entry];
 }
-
-useObserver.propTypes = {
-    threshold: PropTypes.number,
-    root: PropTypes.object,
-    rootMargin: PropTypes.string,
-};
-
-useObserver.defaultProps = {
-    threshold: 0,
-    root: null,
-    rootMargin: "0px",
-};
 
 export default useObserver;

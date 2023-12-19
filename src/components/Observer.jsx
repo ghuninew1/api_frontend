@@ -1,68 +1,44 @@
-import { forwardRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import { useObserver } from "../hook/useObserver";
 
-export const ObserverRef = forwardRef(({ children, ...props }, ref) => {
-    const [observerRef, entry] = useObserver(props);
+const Observer = ({ children, ...props }) => {
+    const [entry, setEntry] = useState({});
+    const observer = useRef(null);
+    const observerRef = useRef(null);
 
-    return children({
-        ref: ref || observerRef,
-        entry,
-    });
-});
+    useEffect(() => {
+        observer.current = new IntersectionObserver(
+            ([entry]) => {
+                setEntry(entry);
+            },
+            {
+                root: props.root,
+                rootMargin: props.rootMargin,
+                threshold: props.threshold,
+            }
+        );
+        observer.current.observe(observerRef.current);
+        return () => {
+            observer.current.disconnect();
+        };
+    }, [props]);
 
-ObserverRef.displayName = "ObserverRef";
-
-ObserverRef.propTypes = {
-    children: PropTypes.func.isRequired,
+    return children({ ref: observerRef, entry });
 };
 
-export function Observer({ children, threshold, rootMargin, ...props }) {
-    return (
-        <ObserverRef threshold={threshold} rootMargin={rootMargin}>
-            {({ ref, entry }) => (
-                <div ref={ref} {...props}>
-                    {entry && children}
-                </div>
-            )}
-        </ObserverRef>
-    );
-}
-
 Observer.propTypes = {
-    children: PropTypes.node.isRequired,
-    threshold: PropTypes.number,
+    children: PropTypes.func.isRequired,
+    root: PropTypes.object,
     rootMargin: PropTypes.string,
+    threshold: PropTypes.number,
+    triggerOnce: PropTypes.bool,
 };
 
 Observer.defaultProps = {
+    root: null,
+    rootMargin: "0px",
     threshold: 0,
-    rootMargin: "0px 0px 0px 0px",
+    triggerOnce: false,
 };
 
 export default Observer;
-
-//Usage:
-// import { UseObserver } from "../hook/Observer";
-// import ToTop from "../components/ToTop";
-//
-// const Contact = () => {
-//     const length = 30;
-//     const refs = Object.keys(Array.from({ length }));
-//
-//     return refs.map((_, index) => (
-//         <div
-//             key={index + 1 + "div"}
-//             className="my-[50px] min-h-screen scroll-smooth"
-//         >
-//             <ToTop />
-//             <UseObserver key={index + "-div"}>
-//                 <div className="m-7">
-//                     <div className="h-[200px] my-[20px] bg-red-600 m-7 anim-fade-in-left">
-//                         <h1>Header</h1>
-//                     </div>
-//                 </div>
-//             </UseObserver>
-//         </div>
-//     ));
-// };
