@@ -21,14 +21,17 @@ export default function ButtonLogin({
                 {...rest}
                 type={type}
                 variant="no"
-                className={cx("w-full overflow-hidden relative", className)}
+                className={cx(
+                    "w-full overflow-hidden relative hover:bg-opacity-70",
+                    className
+                )}
             >
                 {icon && (
-                    <span className="absolute top-1/2 left-2 transform -translate-y-1/2">
+                    <span className="absolute top-1/2 left-2 transform -translate-y-1/2 ">
                         {icon}
                     </span>
                 )}
-                {text && <p className="shadow-sm stroke-gray-600">{text}</p>}
+                {text && <p className="font-semibold">{text}</p>}
                 {children && children}
                 {isHovered && (
                     <AiOutlineArrowRight

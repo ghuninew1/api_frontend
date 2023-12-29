@@ -170,7 +170,7 @@ export default function Login() {
                             <ButtonLogin
                                 to={"/auth/line"}
                                 className={
-                                    "bg-[#06C755] hover:bg-[#06C700] text-black"
+                                    "bg-[#06C755] hover:bg-[#06C755] text-white"
                                 }
                                 text={"Login with Line"}
                                 icon={
